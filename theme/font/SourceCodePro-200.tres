@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://bdh5l3bf6komk"]
+
+[ext_resource type="FontFile" uid="uid://dkmfd1fg0yb1t" path="res://theme/font/SourceCodePro-VariableFont_wght.ttf" id="1_pkf40"]
+
+[resource]
+base_font = ExtResource("1_pkf40")

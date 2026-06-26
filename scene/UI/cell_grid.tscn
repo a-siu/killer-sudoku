@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://dv4icjhf3dtwd"]
+
+[ext_resource type="Script" uid="uid://b0okep00s67ym" path="res://script/UI/Containers/cell_grid.gd" id="1_aytp3"]
+[ext_resource type="Script" uid="uid://3uqsg3copn1t" path="res://script/UI/View/grid_sprite.gd" id="3_ou28r"]
+[ext_resource type="Script" uid="uid://hshgo5i6cvdb" path="res://script/UI/View/selection_overlay.gd" id="4_27wvm"]
+
+[node name="GridManager" type="AspectRatioContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="CellGrid" type="GridContainer" parent="MarginContainer"]
+z_index = 1
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 1
+columns = 9
+script = ExtResource("1_aytp3")
+
+[node name="GridSprite" type="ColorRect" parent="."]
+layout_mode = 2
+script = ExtResource("3_ou28r")
+overlay_color = Color(0.6555, 0.86165, 0.95, 0.611765)
+
+[node name="SelectionOverlay" type="Control" parent="GridSprite"]
+self_modulate = Color(1, 1, 1, 0.454902)
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_27wvm")
+
+[connection signal="gui_input" from="GridSprite/SelectionOverlay" to="GridSprite/SelectionOverlay" method="_on_gui_input"]

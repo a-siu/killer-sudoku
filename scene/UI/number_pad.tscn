@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxxlaou05vdng"]
+
+[ext_resource type="Script" uid="uid://0p6afw8fbj7a" path="res://script/UI/Interactables/number_pad.gd" id="1_4d4ho"]
+[ext_resource type="PackedScene" uid="uid://l82cj2ht756p" path="res://scene/UI/number_pad_button.tscn" id="2_jwewq"]
+
+[node name="NumberPad" type="GridContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 3
+script = ExtResource("1_4d4ho")
+
+[node name="7" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2
+
+[node name="8" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2
+
+[node name="9" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2
+
+[node name="4" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2
+
+[node name="5" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2
+
+[node name="6" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2
+
+[node name="1" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2
+
+[node name="2" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2
+
+[node name="3" parent="." instance=ExtResource("2_jwewq")]
+layout_mode = 2

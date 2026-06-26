@@ -1,0 +1,121 @@
+[gd_scene load_steps=8 format=3 uid="uid://d1sjpe3nflo3c"]
+
+[ext_resource type="Script" uid="uid://cb2hr4woqtw0b" path="res://script/UI/Interactables/tool_bar.gd" id="1_lvane"]
+[ext_resource type="Theme" uid="uid://coic4qjras57u" path="res://theme/global.tres" id="2_nutkh"]
+[ext_resource type="Texture2D" uid="uid://b2x8t71r243el" path="res://drawable/InputPad/drafts-20-regular.svg" id="2_vgeem"]
+[ext_resource type="Script" uid="uid://cdr3b02pmjn7h" path="res://script/UI/Interactables/draft_toggle.gd" id="3_5etn0"]
+[ext_resource type="Texture2D" uid="uid://digjveflet3xx" path="res://drawable/InputPad/erase.svg" id="4_nutkh"]
+[ext_resource type="Texture2D" uid="uid://ccysrn2l7k6id" path="res://drawable/InputPad/undo(1).svg" id="5_eg2ai"]
+[ext_resource type="Texture2D" uid="uid://ctggqvnnxeych" path="res://drawable/InputPad/hint-text.svg" id="6_6o4a6"]
+
+[node name="ToolBar" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_lvane")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="AspectRatioContainer"]
+layout_mode = 2
+
+[node name="DraftToggle" type="Button" parent="AspectRatioContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme = ExtResource("2_nutkh")
+toggle_mode = true
+icon = ExtResource("2_vgeem")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("3_5etn0")
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="AspectRatioContainer2"]
+layout_mode = 2
+
+[node name="Erase" type="Button" parent="AspectRatioContainer2/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme = ExtResource("2_nutkh")
+icon = ExtResource("4_nutkh")
+icon_alignment = 1
+expand_icon = true
+
+[node name="AspectRatioContainer3" type="AspectRatioContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="AspectRatioContainer3"]
+layout_mode = 2
+
+[node name="Undo" type="Button" parent="AspectRatioContainer3/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme = ExtResource("2_nutkh")
+icon = ExtResource("5_eg2ai")
+icon_alignment = 1
+expand_icon = true
+
+[node name="AspectRatioContainer4" type="AspectRatioContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="AspectRatioContainer4"]
+layout_mode = 2
+
+[node name="SmartHint" type="Button" parent="AspectRatioContainer4/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme = ExtResource("2_nutkh")
+icon = ExtResource("6_6o4a6")
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="toggled" from="AspectRatioContainer/Control/DraftToggle" to="." method="_on_draft_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/Control/DraftToggle" to="AspectRatioContainer/Control/DraftToggle" method="_on_toggled"]
+[connection signal="button_down" from="AspectRatioContainer2/Control/Erase" to="AspectRatioContainer2/Control/Erase" method="_on_button_down"]
+[connection signal="button_up" from="AspectRatioContainer2/Control/Erase" to="AspectRatioContainer2/Control/Erase" method="_on_button_up"]
+[connection signal="pressed" from="AspectRatioContainer2/Control/Erase" to="." method="_on_erase_pressed"]
+[connection signal="button_down" from="AspectRatioContainer3/Control/Undo" to="AspectRatioContainer3/Control/Undo" method="_on_button_down"]
+[connection signal="button_up" from="AspectRatioContainer3/Control/Undo" to="AspectRatioContainer3/Control/Undo" method="_on_button_up"]
+[connection signal="pressed" from="AspectRatioContainer3/Control/Undo" to="." method="_on_undo_pressed"]
+[connection signal="button_down" from="AspectRatioContainer4/Control/SmartHint" to="AspectRatioContainer4/Control/SmartHint" method="_on_button_down"]
+[connection signal="button_up" from="AspectRatioContainer4/Control/SmartHint" to="AspectRatioContainer4/Control/SmartHint" method="_on_button_up"]
+[connection signal="pressed" from="AspectRatioContainer4/Control/SmartHint" to="." method="_on_smart_hint_pressed"]

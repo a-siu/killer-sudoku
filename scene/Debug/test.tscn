@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://b44l6wm3cnhw5"]
+
+[ext_resource type="Script" uid="uid://dsh2cs8tg763" path="res://script/Test/test.gd" id="1_fsxfd"]
+[ext_resource type="Theme" uid="uid://coic4qjras57u" path="res://theme/global.tres" id="2_gxi4b"]
+
+[node name="Test" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_gxi4b")
+script = ExtResource("1_fsxfd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Redraw" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_gxi4b")
+text = "Redraw"
+
+[node name="Rotate" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Rotate"
+
+[node name="Swap col" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Swap col"
+
+[node name="recom" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_gxi4b")
+text = "recom"
+
+[node name="show grid" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_gxi4b")
+text = "show cage"
+
+[node name="property list" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_gxi4b")
+text = "show_prop"
+
+[connection signal="pressed" from="HBoxContainer/Redraw" to="." method="_debug_grid"]
+[connection signal="pressed" from="HBoxContainer/Rotate" to="." method="rotate"]
+[connection signal="pressed" from="HBoxContainer/Swap col" to="." method="shuffle"]
+[connection signal="pressed" from="HBoxContainer/recom" to="." method="_recompile"]
+[connection signal="pressed" from="HBoxContainer/show grid" to="." method="show_cage"]
+[connection signal="pressed" from="HBoxContainer/property list" to="." method="show_prop"]
