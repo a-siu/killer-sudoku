@@ -1,7 +1,7 @@
 extends Resource
 class_name House
 
-
+## The list of Cell Object hosted by the House Object
 @export var content : Array[Cell]
 
 func verify() -> bool:

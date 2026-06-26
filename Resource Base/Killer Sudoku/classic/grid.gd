@@ -3,11 +3,16 @@ class_name Grid
 
 enum directions {UP, LEFT, DOWN, RIGHT}
 
+## The List of Rows (House) Object of the grid
 var rows : Array[House] # the main data structure for managing the grid
 
-
+## The List of Column (House) Object of the grid
 var columns : Array[House]
+
+## The list of 3x3 boxes of the grid
 var blocks : Array[House]
+
+## the raw list of cells 
 var cells : Array[Cell]
 
 func verify() -> bool: # check if grid is finished
@@ -27,7 +32,6 @@ func verify() -> bool: # check if grid is finished
 signal random_fill_progress(f: float)
 signal random_fill_finished
 func random_fill() -> void: # randomly assign each cell to a number, according to sudoku rules
-	_populate()
 	var not_assigned := func(c: Cell) -> bool: 
 		if c.number:
 			return false
@@ -80,8 +84,8 @@ func random_fill() -> void: # randomly assign each cell to a number, according t
 	await helper_dfs.call(dice, helper_dfs, 0)
 	random_fill_finished.emit()
 
-
-func _recompile() -> void: # re-construct data structures from rows
+## re-construct data structures from rows
+func _recompile() -> void: 
 	for i in range(9):
 		var row : House = rows[i]
 		for j in range(9):
@@ -97,9 +101,11 @@ func _recompile() -> void: # re-construct data structures from rows
 
 func _init() -> void:
 	_populate()
-	
-func _populate() -> void: # fill each array with their data structure
-	for arr_house : Array[House] in [columns, rows, blocks]:
+
+## populate a 9x9 grid of cells without addition data, just blank cells objects
+func _populate() -> void: 
+	var to_be_filled := [columns, rows, blocks]
+	for arr_house : Array[House] in to_be_filled:
 		arr_house.resize(9)
 		for i in range(9):
 			var house : House = House.new()
@@ -116,7 +122,8 @@ func _populate() -> void: # fill each array with their data structure
 	cells.resize(81)
 	_recompile()
 
-func _generic_fill() -> void: # fill the grid with a less random approach
+## fill the grid with a less random approach
+func _generic_fill() -> void:
 	var dice := range(1, 10)
 	dice.shuffle()
 	var base_array = dice.duplicate()
@@ -128,8 +135,8 @@ func _generic_fill() -> void: # fill the grid with a less random approach
 			base_array = base_array.slice(shift_1) + base_array.slice(0, shift_1)
 		base_array = base_array.slice(shift_2) + base_array.slice(0, shift_2)
 
-
-func _to_string() -> String: # appropiate string representation
+## appropiate string representation
+func _to_string() -> String: 
 	var arr : Array = []
 	for i in rows:
 		arr.append(str(i))

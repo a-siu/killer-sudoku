@@ -1,6 +1,7 @@
 extends Resource
 class_name CageCluster
 
+## the list of cages in the cluster
 var content : Array[Cage]
 
 func _populate(size: int = 34) -> void: # add cages to this data structure
@@ -12,7 +13,9 @@ func _add_cell_to_cage(cell: Cell, cage: Cage):
 	cage.add_cell(cell)
 	prints("added", cell.coords, "to cage")
 
+## force the number of cage heads to increase to match the number (only increase, does not delete existing cages)
 func fulfill_cage_heads(number: int, grid : Grid) -> void:
+	print("#existing cage: ", content.size(), " Still need: ", number - content.size())
 	if not content.size() < number:
 		return
 	var not_has_cage := func(c: Cell) -> bool: 
@@ -29,7 +32,7 @@ func fulfill_cage_heads(number: int, grid : Grid) -> void:
 		var cell : Cell = dice.pop_back()
 		while cell.cage:
 			cell = dice.pop_back()
-		_add_cell_to_cage(cell, content[i])
+		content[i].add_cell(cell)
 
 signal cages_filled
 signal cages_filled_progress(f: float)
@@ -41,12 +44,9 @@ func fill(grid : Grid): # fill the board with cages
 
 
 
-
+## a more robust method of creating cages such that the board only has 1 solution
 func fill_strategy_2(grid: Grid):
-	var cell_of_number := func (num: int) -> Callable:
-		var callback := func (cell: Cell):
-			return cell.number == num
-		return callback
+	## a recursive lambda function to compute nCr with array elements
 	var combination := func (arr : Array, choose: int, callback: Callable) -> Array:
 		if choose == 1:
 			return arr.map(func(v):
@@ -57,6 +57,7 @@ func fill_strategy_2(grid: Grid):
 		return callback.call(next, choose - 1, callback).map(func(v : Array):
 			return [arr[0]] + v
 			) + callback.call(next, choose, callback)
+	## the helper function to slice away possible "cage cycles" to prevent having more than 1 solution (prevent unsolvable sudoku)
 	var helper := func(arr_h: Array[House]):
 		for i in range(0, 9, 3):
 			var combinations : Array = combination.call(arr_h.slice(i, i+3), 2, combination)
@@ -72,18 +73,20 @@ func fill_strategy_2(grid: Grid):
 					if original_number in numbers_checked:
 						continue
 					var cycle : Array[int] = [original_number]
-					var index_1 := row_1.content.find_custom(cell_of_number.call(original_number))
+					var index_1 := row_1.content.find_custom(func(c: Cell): return c.number == original_number)
 					var next_number := row_2.content[index_1].number
 					while next_number != original_number:
 						await Game.sleep(1)
 						cycle.append(next_number)
-						var next_index := row_1.content.find_custom(cell_of_number.call(next_number))
+						var next_index := row_1.content.find_custom(func(c: Cell): return c.number == next_number)
 						next_number = row_2.content[next_index].number
 					
-					
+					# once cycle is found, add to array as "checked numbers"
 					numbers_checked.append_array(cycle)
+					# if cycle size > 4, the probability of forming a cycle is low, thus we ignore it and let rng handle it
 					if cycle.size() > 4:
 						continue
+					## get all cells that already belong in a cage within a House object
 					var caged_cells_in_cycle := func(h: House) -> Array:
 						var new_arr := []
 						var con = h.content
@@ -91,14 +94,28 @@ func fill_strategy_2(grid: Grid):
 							if con[cell_index].cage and con[cell_index].number in cycle:
 								new_arr.append(cell_index)
 						return new_arr
+						
+					# now we try to compare the already caged cells between the 2 house object
 					var indices : Array = caged_cells_in_cycle.call(row_1)
 					var indices_2 : Array = caged_cells_in_cycle.call(row_2)
+					# condition to check if cycle is already broken by other means already
 					if indices.any(func(i: int) -> bool: return i in indices_2):
+						# we skip to next set if already broken
 						continue
+					# if we still need to break them up
+					# if they have cage then we prefer adding a single cage near them rather than adding 2 cages at a totally random position (to reduce the cage heads dureign creation)
 					if indices or indices_2:
 						index_1 = (indices + indices_2).pick_random()
-					content.append(Cage.new().add_cell(row_1.content[index_1]))
-					content.append(Cage.new().add_cell(row_2.content[index_1]))
+						
+					var cage : Cage = Cage.new()
+					cage.add_cell(row_1.content[index_1])
+					if cage.content:
+						content.append(cage)
+					
+					var cage2 = Cage.new()
+					cage2.add_cell(row_1.content[index_1])
+					if cage2.content:
+						content.append(cage2)
 	
 	await helper.call(grid.rows)
 	await helper.call(grid.columns)
@@ -110,7 +127,8 @@ func fill_strategy_2(grid: Grid):
 	for i in content:
 		print(i)
 	cages_filled.emit()
-	
+
+## iteratively expand existing cages to fully fill the grid
 func expand_cage_heads(grid : Grid):
 	var _discard : Array = []
 	for cage in content:
@@ -140,7 +158,7 @@ func expand_cage_heads(grid : Grid):
 			_content_clone.remove_at(_pointer)
 			continue
 		var pending_cell : Cell = neighbor_cell.pick_random()
-		_add_cell_to_cage(pending_cell, current)
+		current.add_cell(pending_cell)
 		_added_numbers.append(pending_cell.number)
 		_discard.append(pending_cell)
 		_pointer += 1
@@ -149,6 +167,7 @@ func expand_cage_heads(grid : Grid):
 		cage.content.sort_custom(func(c1: Cell, c2: Cell):
 			return c1.coords < c2.coords)
 
+## simple "cage add" function based on the number of cage heads in each 3x3 box. to balance the density of cages
 func sprinkle_cage_heads(order: Array[House], threshold_minimum : int):
 	var not_has_cage := func(c: Cell) -> bool:
 		if c.cage:
@@ -158,44 +177,26 @@ func sprinkle_cage_heads(order: Array[House], threshold_minimum : int):
 		var candidates : Array[Cell] = house.content.filter(not_has_cage)
 		while candidates.size() > house.content.size() - threshold_minimum:
 			var cell : Cell = candidates.pop_at(range(candidates.size()).pick_random())
-			_add_cell_to_cage(cell, Cage.new())
+			var cage := Cage.new()
+			cage.add_cell(cell)
+			content.append(cage)
 
 func _init() -> void:
-	pass # Signal connections moved to setup_save_connect() to avoid race condition
+	Game.save_system.load_data.connect(read_from_save)
 
-
-
-func read_from_save(file: ConfigFile):
-	var section := "CageCluster"
-	_populate(file.get_value(section, "size"))
-	for i in range(content.size()):
-		var cage : Cage = content[i]
-		var shape : PackedVector2Array = file.get_value(section, str(i))
-		for coords : Vector2 in shape:
-			var cell : Cell = Game.generator.grid.rows[coords.y].content[coords.x]
-			_add_cell_to_cage(cell, cage)
-
-func write_to_save(file: ConfigFile):
-	var section := "CageCluster"
-	file.set_value(section, "size", content.size())
-	for i in range(content.size()):
-		var cage : Cage = content[i]
-		var shape : PackedVector2Array = cage.content.map(func(c: Cell): return c.coords)
-		file.set_value(section, str(i), shape)
-
-enum DATA {size, cluster}
-func read_from_save2(data: Dictionary):
-	if not data[DATA.size] == data[DATA.cluster]:
-		push_error("Data mismatch, could be corrupted?")
-	for shape : PackedVector2Array in data[DATA.cluster]:
-		var cage = Cage.new()
+func read_from_save(data: Dictionary):
+	if SaverLoader.DATATYPE.cage not in data:
+		push_error("Data not found, cannot load")
+		return
+	var cage_list = data[SaverLoader.DATATYPE.cage]
+	for coords_list in cage_list:
+		 #each "cage" is just an array of cell coords for that cage
+		#so can just populate the cages according to the list
+		var cage := Cage.new()
 		content.append(cage)
-		
-		
-func write_to_save2(data: Dictionary):
-	data[DATA.size] = content.size()
-	data[DATA.cluster] = []
-	for cage in content:
-		var shape : PackedVector2Array = cage.content.map(func(c: Cell): return c.coords)
-		data[DATA.cluster].append(shape)
-	
+		## Coords of the cell in the list
+		for coords : Vector2i in coords_list:
+			# now need to get the cell from the coords
+			# need grid reference
+			var cell_to_be_added : Cell = Game.generator.grid.rows[coords.y].content[coords.x]
+			cage.add_cell(cell_to_be_added)

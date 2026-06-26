@@ -72,6 +72,11 @@ func _init() -> void:
 	Game.save_system.load_data.connect(read_from_save)
 
 func read_from_save(data : Dictionary):
+	
+	if SaverLoader.DATATYPE.cell not in data:
+		push_error("No data for all cells")
+		return
+	data = data[SaverLoader.DATATYPE.cell]
 	if coords not in data:
 		push_error("No data for Cell:", coords)
 		return
@@ -80,11 +85,15 @@ func read_from_save(data : Dictionary):
 	notes_bits = data[coords][DATA.BITS]
 
 func write_to_save(data : Dictionary):
-	if not coords not in data:
+	if SaverLoader.DATATYPE.cell not in data:
+		data[SaverLoader.DATATYPE.cell] = Dictionary()
+	data = data[SaverLoader.DATATYPE.cell]
+	if coords not in data:
 		data[coords] = Dictionary()
-	data[coords][DATA.NUMBER] = number
-	data[coords][DATA.DISPLAY] = display
-	data[coords][DATA.BITS] = notes_bits
+	data = data[coords]
+	data[DATA.NUMBER] = number
+	data[DATA.DISPLAY] = display
+	data[DATA.BITS] = notes_bits
 
 func _to_string() -> String:
 	return str(number)

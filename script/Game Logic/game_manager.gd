@@ -6,14 +6,11 @@ var generator : Generator
 #var scene_manager : SceneManager
 #var ui_wrapper := UIManager.new()
 var input : InputHandler 
-enum DATA {
-	GENERATOR
-}
 
 func _init() -> void:
 	save_system = SaverLoader.new()
-	pass
 
+## a "perfect" sleep function for other functions (use await Game.sleep)
 func sleep(frames : int = 1):
 	for i in range(frames):
 		await get_tree().process_frame
@@ -42,11 +39,7 @@ func open_settings() -> void:
 
 func finish_game():
 	pass
-	
 
-func _on_game_saving(data: Dictionary) -> void:
-	# Let generator handle its own state
-	generator.write_to_save(data)
 
 func _input(event: InputEvent) -> void:
 	input.passed_input(event)

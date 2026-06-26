@@ -9,13 +9,18 @@ signal load_data(data: Dictionary)
 var _timer_ref: Node = null
 var _loaded_elapsed_seconds: int = 0
 
-enum DATATYPE {cell, house}
+enum DATATYPE {cell, cage}
 var game_data_packet : Dictionary
 
 func set_timer_ref(timer_node: Node) -> void:
 	_timer_ref = timer_node
 	if _loaded_elapsed_seconds > 0 and timer_node.has_method("set_seconds"):
 		timer_node.set_seconds(_loaded_elapsed_seconds)
+
+
+func open_file(path: String, access: FileAccess.ModeFlags) -> FileAccess:
+	return FileAccess.open(path, access)
+	return FileAccess.open_encrypted_with_pass(path, access, str(hash(path)))
 
 func save_game(name : String) -> void:
 	var elapsed := 0
@@ -32,7 +37,7 @@ func save_game(name : String) -> void:
 	var file_path := SAVE_PATH % name
 	var file_folder := SAVE_PATH % ''
 	DirAccess.make_dir_recursive_absolute(file_folder)
-	var file :=  FileAccess.open_encrypted_with_pass(file_path, FileAccess.WRITE, str(hash(file_path))) 
+	var file := open_file(file_path, FileAccess.WRITE) 
 	#var file := ConfigFile.new()
 	file.store_var(game_data_packet)
 	file.close()
@@ -44,7 +49,8 @@ func load_game(name: String) -> void:
 		push_error(error_string(ERR_FILE_NOT_FOUND))
 		game_data_packet = Dictionary()
 		return
-	var file := FileAccess.open_encrypted_with_pass(file_path, FileAccess.READ, str(hash(file_path)))
+	var file := open_file(file_path, FileAccess.READ)
+
 	var _temp_data = file.get_var()
 	if not _temp_data:
 		push_error(error_string(ERR_QUERY_FAILED))
