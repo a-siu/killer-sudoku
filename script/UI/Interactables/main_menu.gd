@@ -29,8 +29,8 @@ func _on_new_game_pressed() -> void:
 
 
 func _on_continue_pressed() -> void:
-	Game.use_old_save()
 	game_scene_transition()
+	Game.use_old_save()
 
 func _on_settings_pressed() -> void:
 	pass

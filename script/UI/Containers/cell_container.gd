@@ -14,6 +14,7 @@ var cell : Cell:
 		cell.notes_changed.connect(refresh)
 		cell.display_changed.connect(refresh)
 		cage_component.queue_redraw()
+		refresh()
 
 func refresh() -> void:
 	answer.number = cell.display
