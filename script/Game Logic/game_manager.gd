@@ -27,11 +27,12 @@ var game_in_progress : bool = false
 
 	
 func use_old_save():
-	game_in_progress = true
 	save_system.load_game("generator")
+	game_in_progress = true
 
 func start_new_game():
 	await generator.generate_puzzle()
+	game_in_progress = true
 
 func open_settings() -> void:
 	# open settings scene
