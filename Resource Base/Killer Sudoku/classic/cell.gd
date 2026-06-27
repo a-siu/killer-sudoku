@@ -82,7 +82,8 @@ func read_from_save(data : Dictionary):
 		return
 	number = data[coords][DATA.NUMBER]
 	display = data[coords][DATA.DISPLAY]
-	notes_bits = data[coords][DATA.BITS]
+	var packed_bit = data[coords][DATA.BITS]
+	notes_bits = _int_to_1Dbits(packed_bit, 10)
 
 func write_to_save(data : Dictionary):
 	if SaverLoader.DATATYPE.cell not in data:
@@ -93,7 +94,32 @@ func write_to_save(data : Dictionary):
 	data = data[coords]
 	data[DATA.NUMBER] = number
 	data[DATA.DISPLAY] = display
-	data[DATA.BITS] = notes_bits
+	var packed_bit : int = _1Dbits_to_int(notes_bits)
+	data[DATA.BITS] = packed_bit
 
+## convert 1d bit map into integer
+func _1Dbits_to_int(bits: BitMap) -> int:
+	var return_int := 0
+	var length := bits.get_size().x
+	var _tmp_mult := 1
+	for i in range(length):
+		var value : int = bits.get_bit(i, 0)
+		return_int += value * _tmp_mult
+		_tmp_mult *= 2
+	return return_int
+
+## convert integer to a 1d bitmap, with the size
+func _int_to_1Dbits(num: int, size: int) -> BitMap:
+	var _map := BitMap.new()
+	_map.create(Vector2i(size, 1))
+	for i in range(size):
+		if num % 2 == 0:
+			num /= 2
+			continue
+		_map.set_bit(i, 0, true)
+		num	-= 1
+		num /= 2
+	return _map
+	
 func _to_string() -> String:
 	return str(number)
