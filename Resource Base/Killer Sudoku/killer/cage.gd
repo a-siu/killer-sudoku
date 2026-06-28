@@ -51,8 +51,8 @@ func write_to_save(data: Dictionary):
 	
 
 
-
-func add_cell(cell: Cell):
+## add the cell to the cage if the cell does not have an associated cage
+func add_cell(cell: Cell) -> Cage:
 	if cell.cage:
 		return
 	content.append(cell)

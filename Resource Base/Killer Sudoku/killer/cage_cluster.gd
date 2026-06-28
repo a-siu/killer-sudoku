@@ -106,16 +106,17 @@ func fill_strategy_2(grid: Grid):
 					# if they have cage then we prefer adding a single cage near them rather than adding 2 cages at a totally random position (to reduce the cage heads dureign creation)
 					if indices or indices_2:
 						index_1 = (indices + indices_2).pick_random()
-						
-					var cage : Cage = Cage.new()
-					cage.add_cell(row_1.content[index_1])
-					if cage.content:
-						content.append(cage)
 					
-					var cage2 = Cage.new()
-					cage2.add_cell(row_1.content[index_1])
-					if cage2.content:
-						content.append(cage2)
+					var target_cell : Cell = row_1.content[index_1]
+					if not target_cell.cage:
+						var cage : Cage = Cage.new()
+						cage.add_cell(target_cell)
+						content.append(cage)
+					target_cell = row_2.content[index_1]
+					if not target_cell.cage:
+						var cage : Cage = Cage.new()
+						cage.add_cell(target_cell)
+						content.append(cage)
 	
 	await helper.call(grid.rows)
 	await helper.call(grid.columns)
