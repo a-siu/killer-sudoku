@@ -13,4 +13,6 @@ I like sudoku, but online sudoku sites have limited puzzles. There has to be a g
 ### todo
 
 - Puzzle completion handling
+  - Separate Daily and Infinite
 - Optimization to generation including backgrounded generation
+- Audio fx and visual fx
