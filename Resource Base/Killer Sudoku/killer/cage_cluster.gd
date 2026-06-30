@@ -1,4 +1,4 @@
-extends Resource
+extends RefCounted
 class_name CageCluster
 
 ## the list of cages in the cluster
@@ -38,8 +38,8 @@ signal cages_filled
 signal cages_filled_progress(f: float)
 
 
-
-func fill(grid : Grid): # fill the board with cages
+## A simple random method of generating the cage heads + expanding them
+func fill(grid : Grid): 
 	var cage_number = randi_range(32, 34)
 	fulfill_cage_heads(cage_number, grid)
 	await expand_cage_heads(grid)
@@ -169,7 +169,7 @@ func expand_cage_heads(grid : Grid):
 		cage.content.sort_custom(func(c1: Cell, c2: Cell):
 			return c1.coords < c2.coords)
 
-## simple "cage add" function based on the number of cage heads in selected set of House	. to balance the density of cages
+## simple "cage add" function based on the number of cage heads in selected set of House. to balance the density of cages
 func sprinkle_cage_heads(order: Array[House], threshold_minimum : int):
 	var not_has_cage := func(c: Cell) -> bool:
 		if c.cage:

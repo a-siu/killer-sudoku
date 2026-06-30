@@ -1,4 +1,4 @@
-extends Resource
+extends RefCounted
 class_name Cell
 
 var grid : Grid
