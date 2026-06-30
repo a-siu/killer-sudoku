@@ -1,8 +1,6 @@
 extends Resource
 class_name Cell
 
-
-
 var grid : Grid
 var cage : Cage
 var tuple : Vector2i

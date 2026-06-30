@@ -1,6 +1,6 @@
 extends Node
 
-
+var config_system
 var save_system : SaverLoader
 var generator : Generator
 #var scene_manager : SceneManager
@@ -21,7 +21,6 @@ func _ready() -> void:
 	
 	
 	
-signal game_start
 signal save_exist(is_success : bool)
 var game_in_progress : bool = false
 
