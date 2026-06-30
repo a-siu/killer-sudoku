@@ -8,7 +8,7 @@ A multi-step cage generation algorithm helps eliminate possible cycles that make
 
 ## Motivation
 
-I like sudoku, but online sudoku sites have limited puzzles. There has to be a generator for killer sudoku.
+I like sudoku, but online sudoku sites have limited puzzles. So I created a generator for killer sudoku.
 
 ### todo
 
