@@ -35,7 +35,6 @@ func fulfill_cage_heads(number: int, grid : Grid) -> void:
 		content[i].add_cell(cell)
 
 signal cages_filled
-signal cages_filled_progress(f: float)
 
 
 ## A simple random method of generating the cage heads + expanding them
@@ -140,9 +139,8 @@ func expand_cage_heads(grid : Grid):
 	var _process_counter : int = 0
 	while _content_clone:
 		_process_counter += 1
-		if _process_counter > Game.generator.performance_throttle:
+		if _process_counter > Game.config_system.config[Config.CONFIG.performance_throttle]:
 			await Game.sleep(1)
-			cages_filled_progress.emit(1 - _content_clone.size() / content.size())
 			_process_counter = 0
 		_pointer %= _content_clone.size()
 		

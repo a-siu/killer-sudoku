@@ -29,7 +29,6 @@ func verify() -> bool: # check if grid is finished
 	return true
 
 
-signal random_fill_progress(f: float)
 signal random_fill_finished
 func random_fill() -> void: # randomly assign each cell to a number, according to sudoku rules
 	var not_assigned := func(c: Cell) -> bool: 
@@ -42,18 +41,14 @@ func random_fill() -> void: # randomly assign each cell to a number, according t
 		arr.append(columns[c.coords.x])
 		arr.append(blocks[int(c.coords.y / 3) * 3 + int(c.coords.x / 3)])
 		return arr
-	var get_cell_number := func(c: Cell) -> int: return c.number
-	var house_to_numbers := func (h: House) -> Array[int]: return h.content.map(get_cell_number)
 
-	var helper_dfs := func(dice: Array, callback: Callable, _process_counter: int = 0) -> bool:
+	var helper_dfs := func(random_int_array: Array, callback: Callable, _process_counter: int = 0) -> bool:
 		_process_counter += 1
 		var candidate : int = cells.find_custom(not_assigned)
-		if _process_counter >= Game.generator.performance_throttle:
+		if _process_counter >= Game.config_system.config[Config.CONFIG.performance_throttle]:
 			await Game.sleep(1)
-			self.random_fill_progress.emit(float(candidate) / cells.size())
 			_process_counter = 0
 		if candidate == -1:
-			random_fill_progress.emit(1)
 			return true
 		var current : Cell = cells[candidate]
 		var houses : Array = get_3_houses.call(current)
@@ -64,11 +59,11 @@ func random_fill() -> void: # randomly assign each cell to a number, according t
 					continue
 				banned_numbers.append(cell.number)
 		
-		for number in dice:
+		for number in random_int_array:
 			if number in banned_numbers:
 				continue
 			current.number = number
-			var new_dice := dice.duplicate()
+			var new_dice := random_int_array.duplicate()
 			new_dice.shuffle()
 			if await callback.call(new_dice, callback, _process_counter):
 				return true	

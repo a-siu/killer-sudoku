@@ -9,6 +9,7 @@ var input : InputHandler
 
 func _init() -> void:
 	save_system = SaverLoader.new()
+	config_system = Config.new()
 
 ## a "perfect" sleep function for other functions (use await Game.sleep)
 func sleep(frames : int = 1):

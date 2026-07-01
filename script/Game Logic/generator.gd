@@ -5,7 +5,6 @@ var grid : Grid
 var cages : CageCluster
 var offset : Dictionary[int, int]
 var config_system : Config
-var performance_throttle : int = 20
 
 func _init() -> void:
 	initialize_new_game()
