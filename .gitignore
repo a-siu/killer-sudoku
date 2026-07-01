@@ -14,3 +14,8 @@ addons/godot-git-plugin/windows/~libgit_plugin.windows.editor.x86_64.dll
 # VS Code 
 .vscode/
 
+# Ignore all folders named tmp and their contents
+tmp/
+
+# Ignore all files ending with a .tmp extension
+*.tmp
