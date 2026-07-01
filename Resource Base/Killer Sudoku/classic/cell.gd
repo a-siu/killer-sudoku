@@ -4,12 +4,7 @@ class_name Cell
 var grid : Grid
 var cage : Cage
 var tuple : Vector2i
-enum DATA {
-	NUMBER,
-	DISPLAY,
-	BITS,
-	COORDS
-}
+enum DATA {NUMBER,DISPLAY, BITS, COORDS}
 signal display_changed
 var number : int:
 	get:
