@@ -14,12 +14,6 @@ func _init() -> void:
 
 func initialize_new_game():
 	#var date : String = Time.get_date_string_from_system()
-	var date : String = Time.get_date_string_from_system()
-
-	prints("Date parsed:", date)
-	var seed : int = hash(date) + offset.get(hash(date), 0)
-	prints("Seed generated:", seed)
-	seed(seed)
 	grid = Grid.new()
 	cages = CageCluster.new()
 		
@@ -31,3 +25,13 @@ func generate_puzzle():
 	await cages.fill_strategy_2(grid)
 
 	puzzle_generated.emit()
+
+
+func set_seed(number: int) -> void:
+	seed(number)
+
+func seed_from_string_hash(string_to_be_hashed: String) -> void:
+	prints("String parsed:", string_to_be_hashed)
+	var new_seed : int = hash(string_to_be_hashed)
+	prints("Seed:", new_seed)
+	seed(new_seed)
