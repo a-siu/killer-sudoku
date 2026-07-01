@@ -10,3 +10,7 @@ Killer Sudoku.console.exe
 Killer Sudoku.exe
 Killer Sudoku.pck
 addons/godot-git-plugin/windows/~libgit_plugin.windows.editor.x86_64.dll
+
+# VS Code 
+.vscode/
+
