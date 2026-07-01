@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=11 format=3 uid="uid://coic4qjras57u"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://coic4qjras57u"]
 
 [ext_resource type="StyleBox" uid="uid://c45ohix2bl87l" path="res://theme/button states/disabled.tres" id="1_27qkx"]
 [ext_resource type="StyleBox" uid="uid://bnbd7x4bkvdl8" path="res://theme/button states/hover.tres" id="1_cjywv"]
@@ -9,12 +9,15 @@
 [ext_resource type="StyleBox" uid="uid://dccod6day28ll" path="res://theme/progress bar/background.tres" id="6_hee8w"]
 [ext_resource type="StyleBox" uid="uid://d2uj2u4kdmvje" path="res://theme/progress bar/fill.tres" id="7_d7scf"]
 [ext_resource type="FontVariation" uid="uid://cdps2ctb03117" path="res://theme/font/SourceCodePro-700.tres" id="8_d7scf"]
+[ext_resource type="FontFile" uid="uid://c8fcg4hsjigb6" path="res://theme/font/SourceCodePro-Bold.ttf" id="8_sectx"]
+[ext_resource type="FontFile" uid="uid://bwtpyuxg8d5tr" path="res://theme/font/SourceCodePro-BoldItalic.ttf" id="9_54u0y"]
+[ext_resource type="FontFile" uid="uid://x1rjuhw1afru" path="res://theme/font/SourceCodePro-Italic.ttf" id="10_glo3a"]
+[ext_resource type="FontFile" uid="uid://diy3vcra463mo" path="res://theme/font/SourceCodePro-Regular.ttf" id="12_ur1fe"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sete0"]
 
 [resource]
 default_font = ExtResource("1_tp5qw")
-default_font_size = 16
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/font_sizes/font_size = 32
 Button/styles/disabled = ExtResource("1_27qkx")
@@ -27,5 +30,13 @@ Panel/styles/panel = ExtResource("4_0or2r")
 PanelContainer/styles/panel = ExtResource("4_0or2r")
 ProgressBar/styles/background = ExtResource("6_hee8w")
 ProgressBar/styles/fill = ExtResource("7_d7scf")
-RichTextLabel/font_sizes/bold_font_size = 35
-RichTextLabel/fonts/bold_font = ExtResource("8_d7scf")
+RichTextLabel/font_sizes/bold_font_size = 32
+RichTextLabel/font_sizes/bold_italics_font_size = 32
+RichTextLabel/font_sizes/italics_font_size = 32
+RichTextLabel/font_sizes/mono_font_size = 32
+RichTextLabel/font_sizes/normal_font_size = 32
+RichTextLabel/fonts/bold_font = ExtResource("8_sectx")
+RichTextLabel/fonts/bold_italics_font = ExtResource("9_54u0y")
+RichTextLabel/fonts/italics_font = ExtResource("10_glo3a")
+RichTextLabel/fonts/mono_font = ExtResource("8_d7scf")
+RichTextLabel/fonts/normal_font = ExtResource("12_ur1fe")
