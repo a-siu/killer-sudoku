@@ -14,5 +14,5 @@ func _ready() -> void:
 func integrate(grid : Grid):
 	for y in range(columns):
 		for x in range(columns):
-			var cell = get_child(9 * y + x)
+			var cell := get_child(9 * y + x)
 			cell.cell = Game.generator.grid.rows[y].content[x]
