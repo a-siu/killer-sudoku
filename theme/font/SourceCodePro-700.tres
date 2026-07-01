@@ -1,9 +1,6 @@
 [gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://cdps2ctb03117"]
 
-[ext_resource type="FontFile" uid="uid://dkmfd1fg0yb1t" path="res://theme/font/SourceCodePro-VariableFont_wght.ttf" id="1_e84gi"]
+[ext_resource type="FontFile" uid="uid://c8fcg4hsjigb6" path="res://theme/font/SourceCodePro-Bold.ttf" id="1_e84gi"]
 
 [resource]
 base_font = ExtResource("1_e84gi")
-variation_opentype = {
-2003265652: 700
-}
