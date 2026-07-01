@@ -19,3 +19,5 @@ tmp/
 
 # Ignore all files ending with a .tmp extension
 *.tmp
+
+*.uid
