@@ -21,10 +21,11 @@ config/icon="uid://ncbvu6e7vso2"
 [autoload]
 
 Game="*res://script/Game Logic/game_manager.gd"
-TestRunner="*res://script/Test/test_runner.gd"
 
 [display]
 
+window/size/viewport_width=1080
+window/size/viewport_height=1920
 window/handheld/orientation=1
 
 [file_customization]
@@ -34,7 +35,6 @@ folder_colors={
 "res://save/": "purple",
 "res://scene/": "blue",
 "res://script/": "yellow",
-"res://script/Test/": "gray",
 "res://theme/": "green"
 }
 
