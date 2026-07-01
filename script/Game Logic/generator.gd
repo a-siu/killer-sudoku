@@ -1,9 +1,9 @@
-extends Resource
+extends RefCounted
 class_name Generator
 
-@export var grid : Grid
-@export var cages : CageCluster
-@export var offset : Dictionary[int, int]
+var grid : Grid
+var cages : CageCluster
+var offset : Dictionary[int, int]
 var config_system : Config
 var performance_throttle : int = 20
 

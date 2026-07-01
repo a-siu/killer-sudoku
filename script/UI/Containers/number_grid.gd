@@ -8,7 +8,7 @@ enum Parameter {COLOR, FONT_SIZE}
 		color = v
 		_update(Parameter.COLOR)
 
-@export var numbers: Array[int] = [7,8,9,4,5,6,1,2,3]:
+var numbers: Array[int] = [7,8,9,4,5,6,1,2,3]:
 	set(v):
 		numbers = v
 		resort_by_layout()

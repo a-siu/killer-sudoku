@@ -3,8 +3,8 @@ class_name SaverLoader
 
 const SAVE_PATH := "user://%s"
 
-signal save_data(data: Dictionary)
-signal load_data(data: Dictionary)
+signal write_to(data: Dictionary)
+signal read_from(data: Dictionary)
 
 var _timer_ref: Node = null
 var _loaded_elapsed_seconds: int = 0
@@ -17,10 +17,23 @@ func set_timer_ref(timer_node: Node) -> void:
 	if _loaded_elapsed_seconds > 0 and timer_node.has_method("set_seconds"):
 		timer_node.set_seconds(_loaded_elapsed_seconds)
 
-
+## return the file access, create all necessary folders if needed
 func open_file(path: String, access: FileAccess.ModeFlags) -> FileAccess:
+	DirAccess.make_dir_recursive_absolute(path)
 	return FileAccess.open(path, access)
-	return FileAccess.open_encrypted_with_pass(path, access, str(hash(path)))
+	#return FileAccess.open_encrypted_with_pass(path, access, str(hash(path)))
+
+##write a var to file
+func write(data: Dictionary, path: String) -> void:
+	var file := open_file(SAVE_PATH % path, FileAccess.WRITE)
+	file.store_var(game_data_packet)
+	file.close()
+	prints("Saved to:", SAVE_PATH % path)
+
+##read a var from file
+func read(path: String) -> Dictionary:
+	var file := open_file(SAVE_PATH % path, FileAccess.READ)
+	return file.get_var()
 
 func save_game(name : String) -> void:
 	var elapsed := 0
@@ -32,15 +45,10 @@ func save_game(name : String) -> void:
 	if _timer_ref and _timer_ref.has_method("get_seconds"):
 		game_data_packet["elapsed_seconds"] = _timer_ref.get_seconds()
 	
-	save_data.emit(game_data_packet)	
+	write_to.emit(game_data_packet)	
 	
 	var file_path := SAVE_PATH % name
-	var file_folder := SAVE_PATH % ''
-	DirAccess.make_dir_recursive_absolute(file_folder)
-	var file := open_file(file_path, FileAccess.WRITE) 
-	#var file := ConfigFile.new()
-	file.store_var(game_data_packet)
-	file.close()
+	write(game_data_packet, file_path)
 	prints("Saved:", name)
 
 func load_game(name: String) -> void:
@@ -65,7 +73,7 @@ func load_game(name: String) -> void:
 	if _timer_ref and _timer_ref.has_method("set_seconds"):
 		_timer_ref.set_seconds(_loaded_elapsed_seconds)
 	
-	load_data.emit(game_data_packet)
+	read_from.emit(game_data_packet)
 	
 
 func does_save_exist(name: String) -> bool:

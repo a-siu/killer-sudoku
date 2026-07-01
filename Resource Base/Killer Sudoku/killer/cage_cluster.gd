@@ -184,7 +184,7 @@ func sprinkle_cage_heads(order: Array[House], threshold_minimum : int):
 			content.append(cage)
 
 func _init() -> void:
-	Game.save_system.load_data.connect(read_from_save)
+	Game.save_system.read_from.connect(read_from_save)
 
 func read_from_save(data: Dictionary):
 	if SaverLoader.DATATYPE.cage not in data:

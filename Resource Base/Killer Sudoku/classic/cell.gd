@@ -66,8 +66,8 @@ func get_influence() -> Array[Cell]:
 	return district
 
 func _init() -> void:
-	Game.save_system.save_data.connect(write_to_save)
-	Game.save_system.load_data.connect(read_from_save)
+	Game.save_system.write_to.connect(write_to_save)
+	Game.save_system.read_from.connect(read_from_save)
 
 func read_from_save(data : Dictionary):
 	
